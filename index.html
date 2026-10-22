@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jadwal Sekolah Chelsea</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#edf6ed;color:#24463a}
+header{padding:30px 20px 55px;color:white;background:linear-gradient(145deg,#8bd1d3,#387c64,#183e39);position:relative}
+header:after{content:"";position:absolute;bottom:0;left:0;width:100%;height:65px;background:#b6d8ac;clip-path:polygon(0 100%,0 65%,30% 0,48% 70%,70% 15%,100% 80%,100% 100%)}
+h1{font-size:30px}.wrap{max-width:760px;margin:-20px auto 0;padding:0 12px;position:relative;z-index:1}
+.card{background:white;border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:0 4px 15px #234b3210}
+h2{font-size:19px;margin:0 0 12px}.muted{font-size:12px;color:#718078}
+button{border:0;border-radius:10px;padding:10px 12px;background:#176b55;color:white;margin:3px;cursor:pointer}
+.light{background:#e4f3e8;color:#176b55}.active{background:#f2c96a;color:#473b17}
+.days,.buttons{display:flex;gap:5px;flex-wrap:wrap}.days button{flex:1}
+input,textarea{font:inherit;width:100%;padding:9px;border:1px solid #d7e4da;border-radius:8px;margin:4px 0}
+label{display:block;font-size:13px;margin-top:8px}textarea{min-height:75px}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:7px 4px;border-bottom:1px solid #e5eee7;text-align:left}th{background:#edf7ef}
+td input{min-width:65px}.scroll{overflow-x:auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+canvas{width:100%;height:140px;border:2px dashed #9fcbb1;border-radius:10px;touch-action:none}
+.task{display:flex;gap:8px;align-items:center;padding:5px}.task input{width:20px}
+@media(max-width:430px){.card{padding:13px}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div>🌿 RUANG BELAJAR · KELAS 3D</div><h1>Jadwal Sekolah<br>Chelsea 🌷</h1><p>SDN Pacar Keling 5</p><p>Wali kelas: Pak Akhyar</p><p id="tanggal"></p></header>
+<main class="wrap">
+<section class="card"><h2>Halo, Chelsea! 👋</h2><p>Semangat belajar dan raih bintang hari ini!</p><p id="ringkasan"></p></section>
+<section class="card"><h2>📚 Jadwal Pelajaran</h2><div class="days" id="days"></div><p class="muted">Isi jadwal sesuai informasi resmi sekolah.</p><div class="scroll"><table><thead><tr><th>Jam</th><th>Mata pelajaran</th></tr></thead><tbody id="subjects"></tbody></table></div><button onclick="addSubject()">＋ Tambah pelajaran</button><button onclick="save()">💾 Simpan</button></section>
+<section class="card"><h2>⏰ Jam Sekolah & Seragam</h2><div class="two"><div><label>Jam datang</label><input id="arrival" type="time"></div><div><label>Jam pulang</label><input id="dismissal" type="time"></div></div><label>Seragam hari ini</label><input id="uniform" placeholder="Isi seragam hari ini"><button onclick="save()">Simpan</button><button class="light" onclick="remind()">🔔 Pengingat pulang</button><p class="muted">Notifikasi perlu izin browser dan halaman aktif. Gunakan alarm HP sebagai cadangan.</p></section>
+<section class="card"><h2>👕 Seragam & Ekskul Mingguan</h2><div class="scroll"><table><thead><tr><th>Hari</th><th>Seragam</th><th>Ekskul</th></tr></thead><tbody id="weekly"></tbody></table></div><button onclick="save()">Simpan mingguan</button></section>
+<section class="card"><h2>📝 Catatan Wali Kelas</h2><label>Pesan Pak Akhyar</label><textarea id="teacher" placeholder="Tulis catatan guru"></textarea><label>Catatan orang tua</label><textarea id="parent" placeholder="Catatan untuk Chelsea"></textarea><button onclick="save()">Simpan catatan</button></section>
+<section class="card"><h2>✍️ Paraf Orang Tua</h2><p class="muted">Gambar paraf dengan jari.</p><canvas id="sign"></canvas><button onclick="saveSign()">Simpan paraf</button><button class="light" onclick="clearSign()">Ulangi</button><p id="signStatus" class="muted">Paraf tersimpan di perangkat ini.</p></section>
+<section class="card"><h2>🎒 Checklist Sekolah</h2><div id="checks"></div><button class="light" onclick="resetChecks()">Reset checklist</button></section>
+<section class="card"><h2>💾 Cadangan Data</h2><p class="muted">Data saat ini disimpan di browser HP ini, belum tersinkron ke perangkat lain.</p><button onclick="backup()">Unduh cadangan</button><button class="light" onclick="document.getElementById('file').click()">Pulihkan cadangan</button><input hidden type="file" id="file" accept=".json" onchange="restore(event)"></section>
+<footer class="muted" style="text-align:center;padding:15px">🌱 Semangat belajar, Chelsea!</footer>
+</main>
+<script>
+const names=['Senin','Selasa','Rabu','Kamis','Jumat'],things=['Buku pelajaran','Alat tulis','Botol minum','Bekal','Periksa tugas'];
+let day=0,data={lessons:names.map(()=>[{time:'',name:''},{time:'',name:''},{time:'',name:''}]),weekly:names.map(()=>({uniform:'',extra:''})),arrival:'06:30',dismissal:'12:00',uniform:'',teacher:'',parent:'',checks:[false,false,false,false,false],sign:''};
+try{data={...data,...JSON.parse(localStorage.getItem('chelseaSchedule')||'{}')}}catch(e){}
+day=new Date().getDay();day=day>=1&&day<=5?day-1:0;
+const $=id=>document.getElementById(id);
+function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function collect(){data.arrival=$('arrival').value;data.dismissal=$('dismissal').value;data.uniform=$('uniform').value;data.teacher=$('teacher').value;data.parent=$('parent').value}
+function save(){collect();try{localStorage.setItem('chelseaSchedule',JSON.stringify(data));alert('Data tersimpan di perangkat ini.')}catch(e){alert('Gagal menyimpan data.')}}
+function render(){
+$('tanggal').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+$('days').innerHTML=names.map((n,i)=>`<button class="${i===day?'active':''}" onclick="choose(${i})">${n}</button>`).join('');
+$('subjects').innerHTML=data.lessons[day].map((p,i)=>`<tr><td><input type="time" value="${safe(p.time)}" onchange="data.lessons[day][${i}].time=this.value"></td><td><input placeholder="Nama pelajaran" value="${safe(p.name)}" onchange="data.lessons[day][${i}].name=this.value"></td></tr>`).join('');
+$('weekly').innerHTML=data.weekly.map((w,i)=>`<tr><td>${names[i]}</td><td><input placeholder="Seragam" value="${safe(w.uniform)}" onchange="data.weekly[${i}].uniform=this.value"></td><td><input placeholder="Ekskul" value="${safe(w.extra)}" onchange="data.weekly[${i}].extra=this.value"></td></tr>`).join('');
+$('arrival').value=data.arrival;$('dismissal').value=data.dismissal;$('uniform').value=data.uniform;$('teacher').value=data.teacher;$('parent').value=data.parent;
+$('checks').innerHTML=things.map((t,i)=>`<label class="task"><input type="checkbox" ${data.checks[i]?'checked':''} onchange="data.checks[${i}]=this.checked;saveSilent()"> ${t}</label>`).join('');
+$('ringkasan').textContent='Hari '+names[day]+' · '+data.lessons[day].filter(x=>x.name).length+' pelajaran terisi';
+if(data.sign){let im=new Image();im.onload=()=>{fit();ctx.drawImage(im,0,0,canvas.width,canvas.height)};im.src=data.sign}
+}
+function choose(i){collect();day=i;render()}
+function addSubject(){data.lessons[day].push({time:'',name:''});render()}
+function saveSilent(){collect();localStorage.setItem('chelseaSchedule',JSON.stringify(data))}
+function resetChecks(){data.checks=things.map(()=>false);render();saveSilent()}
+async function remind(){if(!('Notification'in window)){alert('Browser tidak mendukung notifikasi.');return}let p=await Notification.requestPermission();if(p==='granted'){new Notification('Pengingat Chelsea',{body:'Periksa jam pulang sekolah Chelsea.'});alert('Notifikasi diuji. Untuk pengingat terjadwal saat browser tertutup, gunakan alarm HP.')}else alert('Izin notifikasi belum diberikan.')}
+const canvas=$('sign'),ctx=canvas.getContext('2d');let drawing=false;
+function fit(){let r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=r.width*d;canvas.height=140*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#176b55'}
+fit();window.addEventListener('resize',fit);
+function point(e){let r=canvas.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
+canvas.addEventListener('pointerdown',e=>{drawing=true;canvas.setPointerCapture(e.pointerId);let p=point(e);ctx.beginPath();ctx.moveTo(...p)});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;ctx.lineTo(...point(e));ctx.stroke()});
+canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false);
+function saveSign(){data.sign=canvas.toDataURL();saveSilent();$('signStatus').textContent='Paraf tersimpan di perangkat ini.'}
+function clearSign(){ctx.clearRect(0,0,canvas.width,canvas.height);data.sign='';saveSilent()}
+function backup(){collect();let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.href=u;a.download='cadangan-chelsea.json';a.click();URL.revokeObjectURL(u)}
+function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{data={...data,...JSON.parse(r.result)};saveSilent();render();alert('Cadangan dipulihkan.')}catch(x){alert('File tidak valid.')}};r.readAsText(f)}
+render();
+</script>
+</body>
+</html>
