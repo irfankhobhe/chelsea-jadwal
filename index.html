@@ -1,78 +1,157 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#185b49">
 <title>Jadwal Sekolah Chelsea</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#edf6ed;color:#24463a}
-header{padding:30px 20px 55px;color:white;background:linear-gradient(145deg,#8bd1d3,#387c64,#183e39);position:relative}
-header:after{content:"";position:absolute;bottom:0;left:0;width:100%;height:65px;background:#b6d8ac;clip-path:polygon(0 100%,0 65%,30% 0,48% 70%,70% 15%,100% 80%,100% 100%)}
-h1{font-size:30px}.wrap{max-width:760px;margin:-20px auto 0;padding:0 12px;position:relative;z-index:1}
-.card{background:white;border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:0 4px 15px #234b3210}
-h2{font-size:19px;margin:0 0 12px}.muted{font-size:12px;color:#718078}
-button{border:0;border-radius:10px;padding:10px 12px;background:#176b55;color:white;margin:3px;cursor:pointer}
-.light{background:#e4f3e8;color:#176b55}.active{background:#f2c96a;color:#473b17}
-.days,.buttons{display:flex;gap:5px;flex-wrap:wrap}.days button{flex:1}
-input,textarea{font:inherit;width:100%;padding:9px;border:1px solid #d7e4da;border-radius:8px;margin:4px 0}
-label{display:block;font-size:13px;margin-top:8px}textarea{min-height:75px}
-table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:7px 4px;border-bottom:1px solid #e5eee7;text-align:left}th{background:#edf7ef}
-td input{min-width:65px}.scroll{overflow-x:auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-canvas{width:100%;height:140px;border:2px dashed #9fcbb1;border-radius:10px;touch-action:none}
-.task{display:flex;gap:8px;align-items:center;padding:5px}.task input{width:20px}
-@media(max-width:430px){.card{padding:13px}.two{grid-template-columns:1fr}}
+:root{--green:#185b49;--deep:#123f36;--mint:#e8f5eb;--leaf:#b9d9b5;--gold:#f3c96b;--ink:#203d34;--muted:#71847a;--line:#e2ece4;--white:#fff;--red:#a63f3f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#eff6ef;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:88px}
+button,input,textarea,select{font:inherit}button{border:0;border-radius:12px;padding:11px 14px;background:var(--green);color:white;font-weight:650;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.soft{background:var(--mint);color:var(--green)}.gold{background:var(--gold);color:#4b3b10}.danger{background:#fbe9e7;color:var(--red)}.smallbtn{padding:7px 10px;font-size:12px}
+.hero{position:relative;overflow:hidden;padding:23px 18px 76px;color:white;background:linear-gradient(160deg,#9bd5d5 0%,#4c9b83 42%,#164c3f 100%)}
+.hero:before{content:"";position:absolute;left:-10%;right:25%;bottom:0;height:145px;background:#a8cfa5;clip-path:polygon(0 100%,0 70%,18% 43%,32% 58%,51% 0,66% 54%,79% 22%,100% 100%)}
+.hero:after{content:"";position:absolute;right:-10%;bottom:0;width:80%;height:165px;background:#2f7059;clip-path:polygon(0 100%,23% 40%,37% 62%,60% 0,78% 54%,100% 25%,100% 100%)}
+.hero>*{position:relative;z-index:1}.hero-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{font-size:11px;letter-spacing:.4px;background:#ffffff2b;border:1px solid #ffffff55;border-radius:30px;padding:7px 10px}.hero h1{font-size:29px;line-height:1.12;margin:24px 0 8px}.hero p{margin:5px 0;font-size:14px}.hero .date{margin-top:18px;font-size:12px}
+.wrap{max-width:850px;margin:-29px auto 0;padding:0 12px;position:relative;z-index:2}.page{display:none}.page.active{display:block;animation:fade .2s ease}@keyframes fade{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:var(--white);border:1px solid #e6eee7;border-radius:19px;padding:16px;margin-bottom:13px;box-shadow:0 6px 20px #234b3210}.card h2{font-size:18px;margin:0 0 12px}.card h3{font-size:14px;margin:0 0 8px}.muted{font-size:12px;color:var(--muted);line-height:1.5}.welcome{display:flex;align-items:center;justify-content:space-between;gap:12px}.hello{font-size:22px;font-weight:800;margin-bottom:5px}.bigemoji{font-size:39px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat{background:var(--mint);border-radius:14px;padding:12px 5px;text-align:center}.stat b{display:block;font-size:22px;color:var(--green)}.stat span{font-size:11px;color:#61756a}.progress{height:9px;border-radius:20px;background:#e8eee8;overflow:hidden}.progress>div{height:100%;width:0;background:linear-gradient(90deg,#58a87c,#eec55d);border-radius:20px;transition:width .25s}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row .fixed{flex:0 0 auto}.days{display:flex;gap:6px;overflow:auto;padding-bottom:8px}.days button{flex:1;min-width:55px;padding:10px 5px;font-size:12px}.days button.active{background:var(--gold);color:#463a17}
+label{display:block;font-size:12px;color:#5f7468;margin:10px 0 5px}input,textarea,select{width:100%;padding:10px;border:1px solid #d9e5db;border-radius:10px;background:#fff;color:var(--ink);min-width:0}textarea{min-height:78px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--line);vertical-align:middle}th{background:#f0f8f1;color:var(--green)}td input{min-width:88px;padding:8px}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}.checkrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #edf2ed}.checkrow input{width:20px;height:20px;flex:0 0 auto;accent-color:var(--green)}.checkrow span{flex:1}.checkrow.done span{text-decoration:line-through;color:#839087}
+.notice{background:#fff5d9;padding:12px;border-radius:12px;font-size:12px;line-height:1.55}.status{display:inline-flex;align-items:center;gap:6px;font-size:11px;border-radius:30px;padding:6px 9px;background:#f0f3ef;color:#607166}.status.ok{background:#e3f5e7;color:#176b43}.status.warn{background:#fff3d2;color:#805e14}.bottomnav{position:fixed;z-index:10;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:2px;background:#ffffffef;backdrop-filter:blur(12px);border-top:1px solid #dce8de;padding:7px 4px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -5px 20px #254b3210}.bottomnav button{flex:1;background:transparent;color:#71847a;padding:6px 2px;font-size:10px;border-radius:11px;display:flex;flex-direction:column;align-items:center;gap:3px}.bottomnav button .ico{font-size:20px}.bottomnav button.active{background:var(--mint);color:var(--green);font-weight:800}
+canvas{display:block;width:100%;height:145px;border:2px dashed #a8cdb4;border-radius:12px;background:#fbfefb;touch-action:none}.event{border:1px solid var(--line);border-radius:12px;padding:11px;margin:8px 0}.event strong{display:block}.event small{color:var(--muted)}.event-actions{display:flex;gap:6px;margin-top:8px}.event-actions button{font-size:11px;padding:7px}.stars{color:#d39b16;font-size:21px;letter-spacing:2px}.foot{text-align:center;padding:12px;color:var(--muted);font-size:11px}
+@media(max-width:420px){.hero h1{font-size:26px}.card{padding:14px}.stats{gap:5px}.stat{padding:10px 3px}.stat b{font-size:19px}.two{grid-template-columns:1fr}.days button{min-width:50px}}
 </style>
 </head>
 <body>
-<header><div>🌿 RUANG BELAJAR · KELAS 3D</div><h1>Jadwal Sekolah<br>Chelsea 🌷</h1><p>SDN Pacar Keling 5</p><p>Wali kelas: Pak Akhyar</p><p id="tanggal"></p></header>
+<header class="hero">
+ <div class="hero-top"><span class="pill">🌿 RUANG BELAJAR</span><span class="pill">KELAS 3D</span></div>
+ <h1>Jadwal Sekolah<br>Chelsea 🌷</h1><p>SDN Pacar Keling 5 · Wali kelas Pak Akhyar</p>
+ <p class="date" id="todayDate"></p>
+</header>
 <main class="wrap">
-<section class="card"><h2>Halo, Chelsea! 👋</h2><p>Semangat belajar dan raih bintang hari ini!</p><p id="ringkasan"></p></section>
-<section class="card"><h2>📚 Jadwal Pelajaran</h2><div class="days" id="days"></div><p class="muted">Isi jadwal sesuai informasi resmi sekolah.</p><div class="scroll"><table><thead><tr><th>Jam</th><th>Mata pelajaran</th></tr></thead><tbody id="subjects"></tbody></table></div><button onclick="addSubject()">＋ Tambah pelajaran</button><button onclick="save()">💾 Simpan</button></section>
-<section class="card"><h2>⏰ Jam Sekolah & Seragam</h2><div class="two"><div><label>Jam datang</label><input id="arrival" type="time"></div><div><label>Jam pulang</label><input id="dismissal" type="time"></div></div><label>Seragam hari ini</label><input id="uniform" placeholder="Isi seragam hari ini"><button onclick="save()">Simpan</button><button class="light" onclick="remind()">🔔 Pengingat pulang</button><p class="muted">Notifikasi perlu izin browser dan halaman aktif. Gunakan alarm HP sebagai cadangan.</p></section>
-<section class="card"><h2>👕 Seragam & Ekskul Mingguan</h2><div class="scroll"><table><thead><tr><th>Hari</th><th>Seragam</th><th>Ekskul</th></tr></thead><tbody id="weekly"></tbody></table></div><button onclick="save()">Simpan mingguan</button></section>
-<section class="card"><h2>📝 Catatan Wali Kelas</h2><label>Pesan Pak Akhyar</label><textarea id="teacher" placeholder="Tulis catatan guru"></textarea><label>Catatan orang tua</label><textarea id="parent" placeholder="Catatan untuk Chelsea"></textarea><button onclick="save()">Simpan catatan</button></section>
-<section class="card"><h2>✍️ Paraf Orang Tua</h2><p class="muted">Gambar paraf dengan jari.</p><canvas id="sign"></canvas><button onclick="saveSign()">Simpan paraf</button><button class="light" onclick="clearSign()">Ulangi</button><p id="signStatus" class="muted">Paraf tersimpan di perangkat ini.</p></section>
-<section class="card"><h2>🎒 Checklist Sekolah</h2><div id="checks"></div><button class="light" onclick="resetChecks()">Reset checklist</button></section>
-<section class="card"><h2>💾 Cadangan Data</h2><p class="muted">Data saat ini disimpan di browser HP ini, belum tersinkron ke perangkat lain.</p><button onclick="backup()">Unduh cadangan</button><button class="light" onclick="document.getElementById('file').click()">Pulihkan cadangan</button><input hidden type="file" id="file" accept=".json" onchange="restore(event)"></section>
-<footer class="muted" style="text-align:center;padding:15px">🌱 Semangat belajar, Chelsea!</footer>
+<section class="page active" id="page-home">
+ <div class="card welcome"><div><div class="hello" id="greeting">Halo, Chelsea! 👋</div><div class="muted">Langkah kecil hari ini, prestasi besar esok hari.</div><div style="margin-top:10px" class="status" id="cloudStatus">☁️ Mode perangkat</div></div><div class="bigemoji">🎒</div></div>
+ <div class="stats"><div class="stat"><b id="todayCount">0</b><span>Pelajaran hari ini</span></div><div class="stat"><b id="starCount">0 ⭐</b><span>Bintang prestasi</span></div><div class="stat"><b id="doneCount">0/5</b><span>Persiapan selesai</span></div></div>
+ <div class="card"><h2>🌱 Target hari ini</h2><div class="row"><span class="muted" id="progressText">0% selesai</span><strong id="progressPercent">0%</strong></div><div class="progress" style="margin:9px 0 13px"><div id="progressBar"></div></div><div id="homeChecklist"></div><p class="muted">Setiap checklist selesai memberi 1 bintang. Bintang tersimpan di perangkat ini.</p></div>
+ <div class="card"><h2>📖 Jadwal hari ini</h2><div id="homeSchedule" class="muted">Belum ada pelajaran. Isi di menu Jadwal.</div><button class="soft" onclick="showPage('schedule')">Buka jadwal lengkap →</button></div>
+ <div class="card"><h2>📅 Agenda terdekat</h2><div id="nextEvents" class="muted">Belum ada agenda. Tambahkan tugas, ujian, atau ekskul di menu Kalender.</div><button class="soft" onclick="showPage('calendar')">Buka kalender →</button></div>
+ </section>
+<section class="page" id="page-schedule">
+ <div class="card"><h2>📚 Jadwal Pelajaran</h2><p class="muted">Pilih hari dan isi sesuai jadwal resmi sekolah. Perubahan otomatis disimpan lokal.</p><div class="days" id="dayButtons"></div><div class="scroll"><table><thead><tr><th>Jam</th><th>Mata pelajaran</th><th></th></tr></thead><tbody id="lessonRows"></tbody></table></div><div class="row" style="margin-top:10px"><button onclick="addLesson()">＋ Tambah pelajaran</button><button class="soft" onclick="saveAll()">Simpan sekarang</button></div></div>
+ <div class="card"><h2>⏰ Jam Sekolah</h2><div class="two"><div><label>Jam datang</label><input id="arrival" type="time"></div><div><label>Jam pulang</label><input id="dismissal" type="time"></div></div><label>Seragam hari yang dipilih</label><input id="todayUniform" placeholder="Isi sesuai ketentuan sekolah"><div class="row" style="margin-top:10px"><button onclick="saveAll()">Simpan informasi</button><button class="soft" onclick="requestNotifications()">🔔 Tes notifikasi</button></div><p class="muted">Notifikasi web tidak selalu berjalan saat browser tertutup. Gunakan alarm HP sebagai cadangan.</p></div>
+ <div class="card"><h2>👕 Seragam & Ekskul Mingguan</h2><div class="scroll"><table><thead><tr><th>Hari</th><th>Seragam</th><th>Ekskul/kegiatan</th></tr></thead><tbody id="weeklyRows"></tbody></table></div><button style="margin-top:10px" onclick="saveAll()">Simpan seragam & ekskul</button></div>
+ </section>
+<section class="page" id="page-calendar">
+ <div class="card"><h2>🗓️ Kalender Tugas, Ujian & Ekskul</h2><p class="muted">Tambahkan agenda dengan tanggal agar mudah diingat.</p><label>Nama agenda</label><input id="eventTitle" placeholder="Contoh: Ulangan Matematika"><div class="two"><div><label>Jenis</label><select id="eventType"><option>Tugas</option><option>Ujian</option><option>Ekskul</option><option>Kegiatan sekolah</option><option>Lainnya</option></select></div><div><label>Tanggal</label><input id="eventDate" type="date"></div></div><label>Catatan (opsional)</label><input id="eventNote" placeholder="Buku yang dibawa, perlengkapan, dll."><button style="margin-top:10px" onclick="addEvent()">＋ Tambah agenda</button></div>
+ <div class="card"><h2>📌 Daftar agenda</h2><div id="eventList"></div></div>
+ </section>
+<section class="page" id="page-notes">
+ <div class="card"><h2>📝 Catatan Wali Kelas</h2><label>Pesan dari Pak Akhyar</label><textarea id="teacherNote" placeholder="Tulis catatan guru..."></textarea><label>Catatan orang tua</label><textarea id="parentNote" placeholder="Pesan untuk Chelsea..."></textarea><button onclick="saveAll()">Simpan catatan</button></div>
+ <div class="card"><h2>✍️ Paraf Orang Tua</h2><p class="muted">Gambar paraf dengan jari pada area putih. Simpan untuk membuat entri riwayat dengan tanggal.</p><canvas id="signature"></canvas><div class="row" style="margin-top:9px"><button onclick="saveSignature()">Simpan paraf</button><button class="soft" onclick="clearSignature()">Hapus & ulangi</button></div><div id="signatureStatus" class="muted" style="margin-top:8px">Belum ada paraf baru.</div></div>
+ <div class="card"><h2>📜 Riwayat paraf</h2><div id="signatureHistory"></div><p class="muted">Riwayat ini disimpan di perangkat ini dan ikut masuk ke cadangan data.</p></div>
+ </section>
+<section class="page" id="page-achievements">
+ <div class="card"><h2>🏆 Bintang & Prestasi Chelsea</h2><div class="stars" id="starsVisual">☆☆☆☆☆</div><h3 id="achievementTitle">Ayo kumpulkan bintang!</h3><p id="achievementText" class="muted">Selesaikan checklist persiapan harian untuk mendapatkan bintang.</p><div class="progress"><div id="starProgress"></div></div><p class="muted" id="starProgressText"></p></div>
+ <div class="card"><h2>🎒 Checklist harian</h2><div id="fullChecklist"></div><button class="soft" onclick="resetChecklist()">Reset checklist hari ini</button></div>
+ </section>
+<section class="page" id="page-account">
+ <div class="card"><h2>☁️ Login & sinkronisasi</h2><p class="muted">Login Firebase belum aktif sampai konfigurasi Firebase milikmu diisi dan diuji. Data lokal tidak dihapus saat mengaktifkan login.</p><div class="notice">Buat project Firebase, aktifkan Authentication → Email/Password dan Firestore Database. Setelah itu tempel konfigurasi web Firebase di bagian CONFIG FIREBASE pada kode ini. Jangan pernah membagikan kata sandi akunmu.</div><label>Email</label><input id="email" type="email" autocomplete="username" placeholder="email@example.com"><label>Kata sandi</label><input id="password" type="password" autocomplete="current-password" placeholder="Minimal 6 karakter"><div class="row" style="margin-top:10px"><button onclick="loginFirebase()">Login</button><button class="soft" onclick="registerFirebase()">Daftar akun</button></div><button class="danger" style="margin-top:8px" onclick="logoutFirebase()">Keluar</button><div id="authMessage" class="muted" style="margin-top:10px">Belum terhubung ke Firebase.</div><p class="muted">Setelah login berhasil, data disinkronkan ke Firestore untuk akun ini. Jangan gunakan akun yang sama bersama orang yang tidak dipercaya.</p></div>
+ <div class="card"><h2>💾 Cadangan & pemulihan</h2><p class="muted">Simpan salinan data sebelum mengganti HP atau mengedit kode.</p><div class="row"><button onclick="exportBackup()">Unduh cadangan</button><button class="soft" onclick="$('backupFile').click()">Pulihkan cadangan</button><input id="backupFile" type="file" accept=".json,application/json" hidden onchange="importBackup(event)"></div><button class="soft" style="margin-top:10px" onclick="saveAll()">Simpan data di perangkat</button></div>
+ </section>
 </main>
+<nav class="bottomnav" aria-label="Navigasi utama">
+<button class="active" data-page="home" onclick="showPage('home')"><span class="ico">🏡</span>Beranda</button>
+<button data-page="schedule" onclick="showPage('schedule')"><span class="ico">📚</span>Jadwal</button>
+<button data-page="calendar" onclick="showPage('calendar')"><span class="ico">🗓️</span>Kalender</button>
+<button data-page="notes" onclick="showPage('notes')"><span class="ico">✍️</span>Catatan</button>
+<button data-page="achievements" onclick="showPage('achievements')"><span class="ico">🏆</span>Prestasi</button>
+<button data-page="account" onclick="showPage('account')"><span class="ico">☁️</span>Akun</button>
+</nav>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-const names=['Senin','Selasa','Rabu','Kamis','Jumat'],things=['Buku pelajaran','Alat tulis','Botol minum','Bekal','Periksa tugas'];
-let day=0,data={lessons:names.map(()=>[{time:'',name:''},{time:'',name:''},{time:'',name:''}]),weekly:names.map(()=>({uniform:'',extra:''})),arrival:'06:30',dismissal:'12:00',uniform:'',teacher:'',parent:'',checks:[false,false,false,false,false],sign:''};
-try{data={...data,...JSON.parse(localStorage.getItem('chelseaSchedule')||'{}')}}catch(e){}
-day=new Date().getDay();day=day>=1&&day<=5?day-1:0;
+/* ================= CONFIG FIREBASE =================
+   Isi objek firebaseConfig dari Firebase Console > Project settings > Your apps.
+   Jangan masukkan kata sandi, private key, atau service-account key di sini.
+   Sampai dikonfigurasi dan diuji, fitur cloud tetap nonaktif.
+*/
+const firebaseConfig = {
+  apiKey: "ISI_API_KEY",
+  authDomain: "ISI_PROJECT_ID.firebaseapp.com",
+  projectId: "ISI_PROJECT_ID",
+  storageBucket: "ISI_PROJECT_ID.appspot.com",
+  messagingSenderId: "ISI_MESSAGING_SENDER_ID",
+  appId: "ISI_APP_ID"
+};
+/* =================================================== */
+const DAYS=['Senin','Selasa','Rabu','Kamis','Jumat'];
+const CHECKS=['Buku pelajaran','Alat tulis','Botol minum','Bekal sekolah','Periksa tugas'];
+const STORE='chelseaSchedule';
+let selectedDay=(new Date().getDay()>=1&&new Date().getDay()<=5)?new Date().getDay()-1:0;
 const $=id=>document.getElementById(id);
-function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function collect(){data.arrival=$('arrival').value;data.dismissal=$('dismissal').value;data.uniform=$('uniform').value;data.teacher=$('teacher').value;data.parent=$('parent').value}
-function save(){collect();try{localStorage.setItem('chelseaSchedule',JSON.stringify(data));alert('Data tersimpan di perangkat ini.')}catch(e){alert('Gagal menyimpan data.')}}
-function render(){
-$('tanggal').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-$('days').innerHTML=names.map((n,i)=>`<button class="${i===day?'active':''}" onclick="choose(${i})">${n}</button>`).join('');
-$('subjects').innerHTML=data.lessons[day].map((p,i)=>`<tr><td><input type="time" value="${safe(p.time)}" onchange="data.lessons[day][${i}].time=this.value"></td><td><input placeholder="Nama pelajaran" value="${safe(p.name)}" onchange="data.lessons[day][${i}].name=this.value"></td></tr>`).join('');
-$('weekly').innerHTML=data.weekly.map((w,i)=>`<tr><td>${names[i]}</td><td><input placeholder="Seragam" value="${safe(w.uniform)}" onchange="data.weekly[${i}].uniform=this.value"></td><td><input placeholder="Ekskul" value="${safe(w.extra)}" onchange="data.weekly[${i}].extra=this.value"></td></tr>`).join('');
-$('arrival').value=data.arrival;$('dismissal').value=data.dismissal;$('uniform').value=data.uniform;$('teacher').value=data.teacher;$('parent').value=data.parent;
-$('checks').innerHTML=things.map((t,i)=>`<label class="task"><input type="checkbox" ${data.checks[i]?'checked':''} onchange="data.checks[${i}]=this.checked;saveSilent()"> ${t}</label>`).join('');
-$('ringkasan').textContent='Hari '+names[day]+' · '+data.lessons[day].filter(x=>x.name).length+' pelajaran terisi';
-if(data.sign){let im=new Image();im.onload=()=>{fit();ctx.drawImage(im,0,0,canvas.width,canvas.height)};im.src=data.sign}
+const blankDay=()=>[{time:'',name:''},{time:'',name:''},{time:'',name:''}];
+let state={lessons:DAYS.map(blankDay),weekly:DAYS.map(()=>({uniform:'',extra:''})),arrival:'06:30',dismissal:'12:00',uniform:'',teacher:'',parent:'',checks:{},stars:0,events:[],signatures:[],signatureDraft:'',updatedAt:null};
+let auth=null,db=null,user=null,cloudReady=false,loadingCloud=false,saveTimer=null;
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateKey(){return new Date().toLocaleDateString('sv-SE')}
+function todayIndex(){let d=new Date().getDay();return d>=1&&d<=5?d-1:0}
+function migrateLocal(){
+ try{
+  const raw=localStorage.getItem(STORE)||localStorage.getItem('chelseaV2')||localStorage.getItem('chelseaScheduleV1');
+  if(!raw)return;
+  const old=JSON.parse(raw);
+  if(old.lessons)state={...state,...old};
+  else if(old.jadwal){state.lessons=old.jadwal.map(arr=>arr.map(p=>({time:p.time||p.jam||'',name:p.name||p.mapel||''})));if(old.mingguan)state.weekly=old.mingguan.map(w=>({uniform:w.uniform||w.seragam||'',extra:w.extra||w.ekskul||''}));state.arrival=old.arrival||old.datang||state.arrival;state.dismissal=old.dismissal||old.pulang||state.dismissal;state.uniform=old.uniform||old.seragamHari||'';state.teacher=old.teacher||old.catatanGuru||'';state.parent=old.parent||old.catatanOrtu||'';state.checks=old.checks||{};if(Array.isArray(old.cek))old.cek.forEach((v,i)=>state.checks[dateKey()+'-'+i]=v);state.signatureDraft=old.sign||old.paraf||''}
+  else if(old.days){state.lessons=old.days.map(d=>(d.subjects||[]).map(p=>({time:p.time||'',name:p.name||''})));state.arrival=old.days[0]?.arrival||state.arrival;state.dismissal=old.days[0]?.dismissal||state.dismissal;state.uniform=old.days[0]?.uniform||'';state.teacher=old.teacherNote||'';state.parent=old.parentNote||'';state.weekly=(old.weekly||[]).map(w=>({uniform:w.uniform||'',extra:w.extra||''}));state.signatureDraft=old.signature||''}
+ }catch(e){console.warn('Data lama tidak dapat dibaca',e)}
 }
-function choose(i){collect();day=i;render()}
-function addSubject(){data.lessons[day].push({time:'',name:''});render()}
-function saveSilent(){collect();localStorage.setItem('chelseaSchedule',JSON.stringify(data))}
-function resetChecks(){data.checks=things.map(()=>false);render();saveSilent()}
-async function remind(){if(!('Notification'in window)){alert('Browser tidak mendukung notifikasi.');return}let p=await Notification.requestPermission();if(p==='granted'){new Notification('Pengingat Chelsea',{body:'Periksa jam pulang sekolah Chelsea.'});alert('Notifikasi diuji. Untuk pengingat terjadwal saat browser tertutup, gunakan alarm HP.')}else alert('Izin notifikasi belum diberikan.')}
-const canvas=$('sign'),ctx=canvas.getContext('2d');let drawing=false;
-function fit(){let r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=r.width*d;canvas.height=140*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#176b55'}
-fit();window.addEventListener('resize',fit);
-function point(e){let r=canvas.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
-canvas.addEventListener('pointerdown',e=>{drawing=true;canvas.setPointerCapture(e.pointerId);let p=point(e);ctx.beginPath();ctx.moveTo(...p)});
-canvas.addEventListener('pointermove',e=>{if(!drawing)return;ctx.lineTo(...point(e));ctx.stroke()});
-canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false);
-function saveSign(){data.sign=canvas.toDataURL();saveSilent();$('signStatus').textContent='Paraf tersimpan di perangkat ini.'}
-function clearSign(){ctx.clearRect(0,0,canvas.width,canvas.height);data.sign='';saveSilent()}
-function backup(){collect();let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.href=u;a.download='cadangan-chelsea.json';a.click();URL.revokeObjectURL(u)}
-function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{data={...data,...JSON.parse(r.result)};saveSilent();render();alert('Cadangan dipulihkan.')}catch(x){alert('File tidak valid.')}};r.readAsText(f)}
-render();
+function saveLocal(){state.updatedAt=new Date().toISOString();try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){alert('Penyimpanan lokal penuh. Silakan unduh cadangan.')} }
+function saveAll(show=true){collectFields();saveLocal();renderAll();scheduleCloudSave();if(show)alert(user?'Data disimpan di perangkat dan akan disinkronkan.':'Data tersimpan di perangkat ini. Login Firebase belum aktif atau belum dilakukan.')}
+function collectFields(){state.arrival=$('arrival').value;state.dismissal=$('dismissal').value;state.uniform=$('todayUniform').value;state.teacher=$('teacherNote').value;state.parent=$('parentNote').value}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});if(name==='notes')setTimeout(resizeCanvas,50)}
+function renderDays(){$('dayButtons').innerHTML=DAYS.map((d,i)=>`<button class="${i===selectedDay?'active':''}" onclick="selectDay(${i})">${d}</button>`).join('')}
+function selectDay(i){collectFields();selectedDay=i;renderAll()}
+function renderLessons(){$('lessonRows').innerHTML=state.lessons[selectedDay].map((p,i)=>`<tr><td><input aria-label="Jam pelajaran" type="time" value="${safe(p.time)}" onchange="state.lessons[selectedDay][${i}].time=this.value;saveLocal();renderHome()"></td><td><input aria-label="Nama pelajaran" placeholder="Nama pelajaran" value="${safe(p.name)}" onchange="state.lessons[selectedDay][${i}].name=this.value;saveLocal();renderHome()"></td><td><button class="danger smallbtn" onclick="removeLesson(${i})">×</button></td></tr>`).join('')}
+function addLesson(){state.lessons[selectedDay].push({time:'',name:''});renderLessons();saveLocal()}
+function removeLesson(i){state.lessons[selectedDay].splice(i,1);renderLessons();saveLocal();renderHome()}
+function renderWeekly(){$('weeklyRows').innerHTML=state.weekly.map((w,i)=>`<tr><td>${DAYS[i]}</td><td><input aria-label="Seragam ${DAYS[i]}" placeholder="Seragam" value="${safe(w.uniform)}" onchange="state.weekly[${i}].uniform=this.value;saveLocal()"></td><td><input aria-label="Ekskul ${DAYS[i]}" placeholder="Ekskul/kegiatan" value="${safe(w.extra)}" onchange="state.weekly[${i}].extra=this.value;saveLocal()"></td></tr>`).join('')}
+function checkKey(i){return dateKey()+'-'+i}
+function toggleCheck(i,v){state.checks[checkKey(i)]=v;if(v)state.stars=(state.stars||0)+1;saveLocal();renderAll();scheduleCloudSave()}
+function renderChecks(target){$(target).innerHTML=CHECKS.map((t,i)=>`<label class="checkrow ${state.checks[checkKey(i)]?'done':''}"><input type="checkbox" ${state.checks[checkKey(i)]?'checked':''} onchange="toggleCheck(${i},this.checked)"><span>${t}</span>${state.checks[checkKey(i)]?'<b>⭐</b>':''}</label>`).join('')}
+function resetChecklist(){if(!confirm('Reset checklist hari ini? Bintang yang sudah didapat tetap tersimpan.'))return;CHECKS.forEach((_,i)=>delete state.checks[checkKey(i)]);saveLocal();renderAll()}
+function renderHome(){let lessons=state.lessons[todayIndex()]||[];$('todayCount').textContent=lessons.filter(p=>p.name.trim()).length;let completed=CHECKS.filter((_,i)=>state.checks[checkKey(i)]).length;let pct=Math.round(completed/CHECKS.length*100);$('doneCount').textContent=completed+'/'+CHECKS.length;$('progressText').textContent=pct+'% selesai';$('progressPercent').textContent=pct+'%';$('progressBar').style.width=pct+'%';$('starCount').textContent=(state.stars||0)+' ⭐';$('homeSchedule').innerHTML=lessons.some(p=>p.name.trim())?'<ul>'+lessons.filter(p=>p.name.trim()).map(p=>`<li>${p.time?safe(p.time)+' — ':''}${safe(p.name)}</li>`).join('')+'</ul>':'Belum ada pelajaran. Isi jadwal di menu Jadwal.';let upcoming=state.events.filter(e=>e.date>=dateKey()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);$('nextEvents').innerHTML=upcoming.length?upcoming.map(e=>`<p>📌 <b>${safe(e.title)}</b><br><span class="muted">${safe(e.type)} · ${safe(e.date)}</span></p>`).join(''):'Belum ada agenda. Tambahkan tugas, ujian, atau ekskul di menu Kalender.';renderChecks('homeChecklist')}
+function renderAchievements(){let n=state.stars||0,level=Math.floor(n/5);$('starsVisual').textContent='★'.repeat(Math.min(5,n%6|| (n>0?5:0)))+'☆'.repeat(Math.max(0,5-Math.min(5,n%6|| (n>0?5:0))));$('achievementTitle').textContent=n>=25?'🌟 Bintang Cemerlang!':n>=10?'🏅 Hebat, Chelsea!':n>=5?'🌼 Mulai Bersinar!':'Ayo kumpulkan bintang!';$('achievementText').textContent=`Chelsea telah mengumpulkan ${n} bintang dari checklist harian.`;$('starProgress').style.width=(n%5)*20+'%';$('starProgressText').textContent=(5-n%5)+' bintang lagi menuju target berikutnya.';renderChecks('fullChecklist')}
+function renderEvents(){let events=[...state.events].sort((a,b)=>a.date.localeCompare(b.date));$('eventList').innerHTML=events.length?events.map(e=>`<div class="event"><strong>${safe(e.title)}</strong><small>${safe(e.type)} · ${safe(e.date)}</small>${e.note?`<p class="muted">${safe(e.note)}</p>`:''}<div class="event-actions"><button class="soft" onclick="toggleEvent(${e.id})">${e.done?'✓ Selesai':'Tandai selesai'}</button><button class="danger" onclick="deleteEvent(${e.id})">Hapus</button></div>${e.done?'<span class="status ok">Selesai</span>':''}</div>`).join(''):'<div class="empty">Belum ada agenda. Tambahkan tugas, ujian, atau ekskul di atas.</div>'}
+function addEvent(){let title=$('eventTitle').value.trim(),date=$('eventDate').value;if(!title||!date){alert('Isi nama agenda dan tanggal terlebih dahulu.');return}state.events.push({id:Date.now(),title,type:$('eventType').value,date,note:$('eventNote').value.trim(),done:false});$('eventTitle').value='';$('eventNote').value='';saveLocal();renderEvents();renderHome();scheduleCloudSave()}
+function toggleEvent(id){let e=state.events.find(x=>x.id===id);if(e)e.done=!e.done;saveLocal();renderEvents();renderHome();scheduleCloudSave()}
+function deleteEvent(id){if(!confirm('Hapus agenda ini?'))return;state.events=state.events.filter(x=>x.id!==id);saveLocal();renderEvents();renderHome();scheduleCloudSave()}
+function renderSignHistory(){$('signatureHistory').innerHTML=state.signatures.length?[...state.signatures].reverse().map((s,i)=>`<div class="event"><strong>Paraf orang tua</strong><small>${safe(new Date(s.date).toLocaleString('id-ID'))}</small><br><img alt="Paraf tersimpan" src="${s.image}" style="width:100%;max-width:300px;height:70px;object-fit:contain;object-position:left;background:#fbfefb;border:1px solid #e4eee5;border-radius:8px;margin-top:8px"><div class="event-actions"><button class="danger" onclick="deleteSignature(${state.signatures.length-1-i})">Hapus riwayat ini</button></div></div>`).join(''):'<div class="empty">Belum ada riwayat paraf.</div>'}
+function deleteSignature(i){if(!confirm('Hapus entri paraf ini?'))return;state.signatures.splice(i,1);saveLocal();renderSignHistory();scheduleCloudSave()}
+const canvas=$('signature'),ctx=canvas.getContext('2d');let drawing=false,hasInk=false;
+function resizeCanvas(){let old=state.signatureDraft||'';let rect=canvas.getBoundingClientRect();if(!rect.width)return;let dpr=window.devicePixelRatio||1;canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(145*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#185b49';ctx.clearRect(0,0,rect.width,145);if(old){let im=new Image();im.onload=()=>ctx.drawImage(im,0,0,rect.width,145);im.src=old}}
+function canvasPoint(e){let r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener('pointerdown',e=>{drawing=true;hasInk=true;canvas.setPointerCapture(e.pointerId);let p=canvasPoint(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;let p=canvasPoint(e);ctx.lineTo(p.x,p.y);ctx.stroke()});
+['pointerup','pointercancel','pointerleave'].forEach(n=>canvas.addEventListener(n,()=>drawing=false));
+function saveSignature(){if(!hasInk&&!state.signatureDraft){alert('Gambar paraf terlebih dahulu dengan jari.');return}let image=canvas.toDataURL('image/png');state.signatureDraft=image;state.signatures.push({date:new Date().toISOString(),image});saveLocal();$('signatureStatus').textContent='Paraf tersimpan pada '+new Date().toLocaleString('id-ID');hasInk=false;renderSignHistory();scheduleCloudSave();alert('Paraf dan riwayat berhasil disimpan di perangkat ini.')}
+function clearSignature(){ctx.clearRect(0,0,canvas.width,canvas.height);state.signatureDraft='';hasInk=false;saveLocal();$('signatureStatus').textContent='Area paraf sudah dibersihkan.'}
+function renderAll(){renderDays();renderLessons();renderWeekly();$('arrival').value=state.arrival||'06:30';$('dismissal').value=state.dismissal||'12:00';$('todayUniform').value=state.uniform||'';$('teacherNote').value=state.teacher||'';$('parentNote').value=state.parent||'';renderHome();renderEvents();renderAchievements();renderSignHistory();updateCloudStatus()}
+function exportBackup(){collectFields();saveLocal();let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='cadangan-jadwal-chelsea.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function importBackup(e){let f=e.target.files&&e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||!Array.isArray(d.lessons))throw Error();if(!confirm('Gabungkan dengan mengganti data lokal saat ini? Unduh cadangan dulu jika perlu.'))return;state={...state,...d};saveLocal();renderAll();scheduleCloudSave();alert('Cadangan berhasil dipulihkan.')}catch(err){alert('File cadangan tidak valid.')}e.target.value=''};r.readAsText(f)}
+function firebaseConfigured(){return firebaseConfig.apiKey!=='ISI_API_KEY'&&firebaseConfig.projectId!=='ISI_PROJECT_ID'&&firebaseConfig.appId!=='ISI_APP_ID'}
+function initFirebase(){if(!firebaseConfigured()){$('authMessage').textContent='Firebase belum dikonfigurasi. Isi firebaseConfig di kode terlebih dahulu.';updateCloudStatus();return}try{if(!window.firebase){$('authMessage').textContent='Firebase SDK gagal dimuat. Periksa koneksi internet.';return}if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(async u=>{user=u;if(u){$('authMessage').textContent='Login sebagai '+u.email+'. Memuat data cloud…';await loadCloud()}else{$('authMessage').textContent='Belum login. Data lokal tetap tersedia.';updateCloudStatus()}})}catch(e){$('authMessage').textContent='Firebase gagal diinisialisasi: '+e.message}}
+async function registerFirebase(){if(!auth){alert('Firebase belum dikonfigurasi.');return}try{let c=await auth.createUserWithEmailAndPassword($('email').value.trim(),$('password').value);$('authMessage').textContent='Akun dibuat: '+c.user.email+'.';}catch(e){$('authMessage').textContent='Gagal daftar: '+e.message}}
+async function loginFirebase(){if(!auth){alert('Firebase belum dikonfigurasi. Isi konfigurasi Firebase dulu.');return}try{await auth.signInWithEmailAndPassword($('email').value.trim(),$('password').value);$('authMessage').textContent='Login berhasil. Menyinkronkan data…'}catch(e){$('authMessage').textContent='Login gagal: '+e.message}}
+async function logoutFirebase(){if(!auth){alert('Firebase belum dikonfigurasi.');return}try{await auth.signOut();user=null;$('authMessage').textContent='Kamu sudah keluar. Data lokal tetap tersedia.';updateCloudStatus()}catch(e){$('authMessage').textContent='Gagal keluar: '+e.message}}
+async function loadCloud(){if(!user||!db)return;loadingCloud=true;try{let ref=db.collection('chelseaData').doc(user.uid),snap=await ref.get();if(snap.exists){let remote=snap.data();if(remote.payload&&remote.updatedAt&&(!state.updatedAt||remote.updatedAt>state.updatedAt)){state={...state,...remote.payload};saveLocal();renderAll()}else{await pushCloud()}}else await pushCloud();$('authMessage').textContent='Login aktif · sinkronisasi cloud siap untuk '+user.email+'.'}catch(e){$('authMessage').textContent='Login berhasil, tetapi sinkronisasi gagal: '+e.message+' Periksa Firestore Rules.'}finally{loadingCloud=false;updateCloudStatus()}}
+function scheduleCloudSave(){if(!user||!db||loadingCloud)return;clearTimeout(saveTimer);saveTimer=setTimeout(pushCloud,1200)}
+async function pushCloud(){if(!user||!db||loadingCloud)return;try{collectFields();state.updatedAt=new Date().toISOString();await db.collection('chelseaData').doc(user.uid).set({payload:state,updatedAt:state.updatedAt,owner:user.uid},{merge:true});$('authMessage').textContent='Data berhasil disinkronkan ke cloud pada '+new Date().toLocaleTimeString('id-ID');updateCloudStatus()}catch(e){$('authMessage').textContent='Gagal sinkronisasi: '+e.message+' Periksa aturan Firestore dan koneksi.';updateCloudStatus()}}
+function updateCloudStatus(){let b=$('cloudStatus');if(user&&db){b.className='status ok';b.textContent='☁️ Login: '+user.email}else{b.className='status warn';b.textContent='📱 Data di perangkat ini'} }
+async function requestNotifications(){if(!('Notification'in window)){alert('Browser ini tidak mendukung notifikasi.');return}try{let p=await Notification.requestPermission();if(p==='granted'){new Notification('Jadwal Chelsea',{body:'Tes notifikasi berhasil. Ini belum merupakan pengingat otomatis harian.'});alert('Notifikasi tes berhasil. Pengingat terjadwal saat browser tertutup belum disiapkan.')}else alert('Izin notifikasi tidak diberikan.')}catch(e){alert('Tidak dapat menampilkan notifikasi.')}
+}
+function startClock(){let now=new Date();$('todayDate').textContent=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});let h=now.getHours();$('greeting').textContent=(h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam')+', Chelsea! 👋'}
+migrateLocal();saveLocal();startClock();renderAll();setTimeout(resizeCanvas,150);initFirebase();
 </script>
 </body>
 </html>
